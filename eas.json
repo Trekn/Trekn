@@ -1,0 +1,79 @@
+{
+  "cli": {
+    "version": ">= 3.10.2"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "channel": "development"
+    },
+    "preview": {
+      "android": {
+        "buildType": "apk",
+        "image": "latest"
+      },
+      "env": {
+        "EXPO_PUBLIC_HELIUS_RPC_URL": "https://rpc.helius.xyz/?api-key=bce0372e-ba93-4fb4-9f70-5b5a279d96a9",
+        "EXPO_PUBLIC_CLIENT_ID_WEB3_AUTH": "BMbNr0e0XKvIXVxt9hbfJSrp6gn_nTpD23ohSYXBZLMwo22e0PISN3JUwhwO17N_eVINlv_j7-1rMQGKh17g_sg",
+        "EXPO_PUBLIC_SERVER_SECRET_KEY": "3A3gEFYQGcMtFooQTXbf5ij89VhdnG163gMTXfvULd1HFFGFUtwTQphpfqXTq2fNsQ7V1tZDvzGmVaiWMWviYm7j",
+        "EXPO_PUBLIC_SUPABASE_URL": "https://mtgjyunxuveqmyunjshy.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10Z2p5dW54dXZlcW15dW5qc2h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTU1MDgxNzcsImV4cCI6MjAxMTA4NDE3N30.1XjSuTqfL-coV4inSKtHrfuC9qj_uvWMo8R-yaKNz8I",
+        "EXPO_PUBLIC_JAVASCRIPT_API_KEY": "AIzaSyCRSfWD_GI0-qwdbCgmEYWzYZFmiy2UuoE",
+        "EXPO_PUBLIC_TREE_AUTHORITY": "HNqkP64FLsuXE4cn7tzuNaBxTx7E7tW1BLwtdJfPFek9",
+        "EXPO_PUBLIC_COLLECTION_MINT": "BdBPS3Rn2DdZUyepnYc5Z25VhQT61GXda69tZdCg16Jz",
+        "EXPO_PUBLIC_COLLECTION_METADATA_ACCOUNT": "2MPT5pS3igYrUCG8qPHX8pZu3B7AEX1ZqovhRo2J7Peo",
+        "EXPO_PUBLIC_COLLECTION_MASTER_EDITOR": "D4B7HfiQ81SXyNWtppYa2S6nUeRp3ynNonQCz2zYeySg",
+        "EXPO_PUBLIC_BACKEND": "https://service.trekn.xyz/api",
+        "EXPO_PUBLIC_MAP_BOX_ACCESS_TOKEN": "pk.eyJ1Ijoib25zcGVlZGhwIiwiYSI6ImNsbm12eXcxODAwNm0ya3AxbWh1OGV6cHkifQ.D9y-ARFleQ86mqB9te2eAw",
+        "EXPO_PUBLIC_GEOAPIFY": "5f91c2d850ab462ab83873e49ef52ce6",
+        "EXPO_PUBLIC_HERE_API_KEY": "ExwLtws92m0c5lpIDhaBCHa16H7JrvR-XToHH0mCtsM",
+        "EXPO_PUBLIC_AWS_ACCESS_KEY_ID": "AKIARJKARC5HEHMACCJE",
+        "EXPO_PUBLIC_AWS_SECRET_ACCESS_KEY": "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",
+        "EXPO_PUBLIC_AWS_BUCKET_NAME": "treknbucket",
+        "EXPO_PUBLIC_AWS_REGION": "ap-east-1"
+      },
+      "channel": "preview"
+    },
+    "production": {
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "env": {
+        "FLIPPER_DISABLE": "1",
+        "EXPO_PUBLIC_HELIUS_RPC_URL": "https://rpc.helius.xyz/?api-key=bce0372e-ba93-4fb4-9f70-5b5a279d96a9",
+        "EXPO_PUBLIC_CLIENT_ID_WEB3_AUTH": "BMbNr0e0XKvIXVxt9hbfJSrp6gn_nTpD23ohSYXBZLMwo22e0PISN3JUwhwO17N_eVINlv_j7-1rMQGKh17g_sg",
+        "EXPO_PUBLIC_SERVER_SECRET_KEY": "3A3gEFYQGcMtFooQTXbf5ij89VhdnG163gMTXfvULd1HFFGFUtwTQphpfqXTq2fNsQ7V1tZDvzGmVaiWMWviYm7j",
+        "EXPO_PUBLIC_SUPABASE_URL": "https://mtgjyunxuveqmyunjshy.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10Z2p5dW54dXZlcW15dW5qc2h5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTU1MDgxNzcsImV4cCI6MjAxMTA4NDE3N30.1XjSuTqfL-coV4inSKtHrfuC9qj_uvWMo8R-yaKNz8I",
+        "EXPO_PUBLIC_JAVASCRIPT_API_KEY": "AIzaSyCRSfWD_GI0-qwdbCgmEYWzYZFmiy2UuoE",
+        "EXPO_PUBLIC_TREE_AUTHORITY": "HNqkP64FLsuXE4cn7tzuNaBxTx7E7tW1BLwtdJfPFek9",
+        "EXPO_PUBLIC_COLLECTION_MINT": "BdBPS3Rn2DdZUyepnYc5Z25VhQT61GXda69tZdCg16Jz",
+        "EXPO_PUBLIC_COLLECTION_METADATA_ACCOUNT": "2MPT5pS3igYrUCG8qPHX8pZu3B7AEX1ZqovhRo2J7Peo",
+        "EXPO_PUBLIC_COLLECTION_MASTER_EDITOR": "D4B7HfiQ81SXyNWtppYa2S6nUeRp3ynNonQCz2zYeySg",
+        "EXPO_PUBLIC_BACKEND": "https://service.trekn.xyz/api",
+        "EXPO_PUBLIC_MAP_BOX_ACCESS_TOKEN": "pk.eyJ1Ijoib25zcGVlZGhwIiwiYSI6ImNsbm12eXcxODAwNm0ya3AxbWh1OGV6cHkifQ.D9y-ARFleQ86mqB9te2eAw",
+        "EXPO_PUBLIC_GEOAPIFY": "5f91c2d850ab462ab83873e49ef52ce6",
+        "EXPO_PUBLIC_HERE_API_KEY": "ExwLtws92m0c5lpIDhaBCHa16H7JrvR-XToHH0mCtsM",
+        "EXPO_PUBLIC_AWS_ACCESS_KEY_ID": "AKIARJKARC5HEHMACCJE",
+        "EXPO_PUBLIC_AWS_SECRET_ACCESS_KEY": "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",
+        "EXPO_PUBLIC_AWS_BUCKET_NAME": "treknbucket",
+        "EXPO_PUBLIC_AWS_REGION": "ap-east-1",
+        "EXPO_PUBLIC_ANDROID_CLIENT_ID": "449665684562-lno84j8l5jml3bs1lp65lvuc3ieegc2h.apps.googleusercontent.com",
+        "EXPO_PUBLIC_IOS_CLIENT_ID": "449665684562-f55bm73upa6gbrdhi1ohumug6cuk68tj.apps.googleusercontent.com",
+        "EXPO_PUBLIC_WEB_CLIENT_ID": "449665684562-jj11q0bso436i17kimsk67e0hg2qfh8q.apps.googleusercontent.com",
+        "EXPO_PUBLIC_SHYFT_API_KEY": "fN9brBRuhvSejAXb",
+        "EXPO_PUBLIC_REMOVER_BACKGROUND_API_KEY": "FKgGYJSUNjHeHKzRgcbkHNTZ"
+      },
+      "channel": "production"
+    }
+  },
+  "submit": {
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "./submit/trekn-project-b791e11ae1b8.json",
+        "track": "internal"
+      }
+    }
+  }
+}
