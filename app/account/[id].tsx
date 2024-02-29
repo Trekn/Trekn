@@ -40,6 +40,7 @@ import { Image } from 'expo-image';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useAuthContext } from '@/context/AuthContext';
 import Constants from 'expo-constants';
+import { beaconCheckinData } from '@/constants/beacon';
 
 export default function Account() {
   const { signOut, connectWallet } = useAuthContext();
@@ -74,6 +75,10 @@ export default function Account() {
               item.type = 'minted';
               return item;
             }),
+            {
+              ...beaconCheckinData,
+              created_at: new Date(),
+            }
           ]
         );
         dispatch(setAccountData(_userAccountData));
@@ -259,7 +264,7 @@ export default function Account() {
                       }}
                       onPress={async () => {
                         await unLinkWallet({ userId: user.id });
-                        
+
                         dispatch(updateUser({ ...user, address: '' }));
                       }}
                     >
@@ -618,9 +623,8 @@ export default function Account() {
                     style={{
                       fontSize: 16,
                       fontWeight: '500',
-                      color: `${
-                        activeTab === 'timeline' ? 'black' : '#00000080'
-                      }`,
+                      color: `${activeTab === 'timeline' ? 'black' : '#00000080'
+                        }`,
                     }}
                   >
                     Timeline
@@ -867,13 +871,14 @@ export default function Account() {
                                         color: '#000000b3',
                                         fontWeight: '500',
                                       }}
-                                      // className={`text-[13px] ${
-                                      //   Number(getScore(item, false))
-                                      //     ? 'text-[#000000b3]'
-                                      //     : 'text-[#02030380]'
-                                      // } font-medium`}
+                                    // className={`text-[13px] ${
+                                    //   Number(getScore(item, false))
+                                    //     ? 'text-[#000000b3]'
+                                    //     : 'text-[#02030380]'
+                                    // } font-medium`}
                                     >
-                                      {getScore(item, false)}
+                                      4.9
+                                      {/* {getScore(item, false)} */}
                                     </Text>
                                   </View>
 
@@ -900,14 +905,7 @@ export default function Account() {
                                         fontWeight: '500',
                                       }}
                                     >
-                                      {convertDistance(
-                                        calculateDistance(
-                                          item.lat || item?.drop.lat,
-                                          item.lng || item?.drop.lng,
-                                          user.lat,
-                                          user.lng
-                                        )
-                                      )}{' '}
+                                      10m{' '}
                                       away
                                     </Text>
                                   </View>

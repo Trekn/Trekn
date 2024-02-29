@@ -211,7 +211,8 @@ export default function DetailCard({ data, status, last }: { data: any; status?:
             </View>
             {userChecked.length > 0 &&
               <View style={{ marginTop: 16, flexDirection: 'row', alignItems: 'center', columnGap: 8 }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', width: userChecked.length === 1 ? 30 : userChecked.length * 22.5 }}>
+                <View 
+                style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', width: userChecked.length === 1 ? 30 : userChecked.length * 22.5 }}>
                   {userChecked.map((item: any, idx: number) => (
                     <Image
                       key={idx}

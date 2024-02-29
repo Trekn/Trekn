@@ -37,7 +37,7 @@ const PointPlusItem: React.FC<PointPlusItemProps> = ({ point, icon = false }) =>
           fontWeight: '500',
         }}
       >
-        +{point} points
+        +{point} $TRN
       </Text>
     </View>
   );

@@ -32,6 +32,7 @@ import Header from '../components/home/Header';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { router } from 'expo-router';
 import { Image } from 'expo-image';
+import BeaconItem from '@/components/beacon/BeaconItem';
 
 export default function Page() {
     const { leaderBoard } = useAuthContext();
@@ -303,7 +304,8 @@ export default function Page() {
                                 <View style={{ marginTop: 24 }}>
                                     {viewList.length !== 0 ? (
                                         <Fragment>
-                                            <Text
+                                            <BeaconItem />
+                                            {/* <Text
                                                 style={{
                                                     fontSize: 28,
                                                     fontWeight: 'bold',
@@ -311,7 +313,7 @@ export default function Page() {
                                                 }}
                                             >
                                                 Nearby experiences
-                                            </Text>
+                                            </Text> */}
                                             <ListDetail status={'Nearby'} data={viewList} isEnd={isEnd} />
                                         </Fragment>
                                     ) : (
