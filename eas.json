@@ -1,0 +1,85 @@
+{
+  "cli": {
+    "version": ">= 3.10.2"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "channel": "development"
+    },
+    "preview": {
+      "android": {
+        "buildType": "apk",
+        "image": "latest"
+      },
+      "env": {
+        "FLIPPER_DISABLE": "1",
+        "EXPO_PUBLIC_HELIUS_RPC_URL": "",
+        "EXPO_PUBLIC_CLIENT_ID_WEB3_AUTH": "",
+        "EXPO_PUBLIC_SERVER_SECRET_KEY": "",
+        "EXPO_PUBLIC_SUPABASE_URL": "",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "",
+        "EXPO_PUBLIC_JAVASCRIPT_API_KEY": "",
+        "EXPO_PUBLIC_TREE_AUTHORITY": "",
+        "EXPO_PUBLIC_COLLECTION_MINT": "",
+        "EXPO_PUBLIC_COLLECTION_METADATA_ACCOUNT": "",
+        "EXPO_PUBLIC_COLLECTION_MASTER_EDITOR": "",
+        "EXPO_PUBLIC_BACKEND": "",
+        "EXPO_PUBLIC_MAP_BOX_ACCESS_TOKEN": "",
+        "EXPO_PUBLIC_GEOAPIFY": "",
+        "EXPO_PUBLIC_HERE_API_KEY": "",
+        "EXPO_PUBLIC_AWS_ACCESS_KEY_ID": "",
+        "EXPO_PUBLIC_AWS_SECRET_ACCESS_KEY": "",
+        "EXPO_PUBLIC_AWS_BUCKET_NAME": "",
+        "EXPO_PUBLIC_AWS_REGION": "",
+        "EXPO_PUBLIC_ANDROID_CLIENT_ID": "",
+        "EXPO_PUBLIC_IOS_CLIENT_ID": "",
+        "EXPO_PUBLIC_WEB_CLIENT_ID": "",
+        "EXPO_PUBLIC_SHYFT_API_KEY": "",
+        "EXPO_PUBLIC_REMOVER_BACKGROUND_API_KEY": "",
+      },
+      "channel": "preview"
+    },
+    "production": {
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "env": {
+        "FLIPPER_DISABLE": "1",
+        "EXPO_PUBLIC_HELIUS_RPC_URL": "",
+        "EXPO_PUBLIC_CLIENT_ID_WEB3_AUTH": "",
+        "EXPO_PUBLIC_SERVER_SECRET_KEY": "",
+        "EXPO_PUBLIC_SUPABASE_URL": "",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "",
+        "EXPO_PUBLIC_JAVASCRIPT_API_KEY": "",
+        "EXPO_PUBLIC_TREE_AUTHORITY": "",
+        "EXPO_PUBLIC_COLLECTION_MINT": "",
+        "EXPO_PUBLIC_COLLECTION_METADATA_ACCOUNT": "",
+        "EXPO_PUBLIC_COLLECTION_MASTER_EDITOR": "",
+        "EXPO_PUBLIC_BACKEND": "",
+        "EXPO_PUBLIC_MAP_BOX_ACCESS_TOKEN": "",
+        "EXPO_PUBLIC_GEOAPIFY": "",
+        "EXPO_PUBLIC_HERE_API_KEY": "",
+        "EXPO_PUBLIC_AWS_ACCESS_KEY_ID": "",
+        "EXPO_PUBLIC_AWS_SECRET_ACCESS_KEY": "",
+        "EXPO_PUBLIC_AWS_BUCKET_NAME": "",
+        "EXPO_PUBLIC_AWS_REGION": "",
+        "EXPO_PUBLIC_ANDROID_CLIENT_ID": "",
+        "EXPO_PUBLIC_IOS_CLIENT_ID": "",
+        "EXPO_PUBLIC_WEB_CLIENT_ID": "",
+        "EXPO_PUBLIC_SHYFT_API_KEY": "",
+        "EXPO_PUBLIC_REMOVER_BACKGROUND_API_KEY": "",
+      },
+      "channel": "production"
+    }
+  },
+  "submit": {
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "./submit/trekn-project-b791e11ae1b8.json",
+        "track": "internal"
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+[
+    {
+      "relation": [
+        "delegate_permission/common.handle_all_urls"
+      ],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.c2tx420.TreknNativeSDK50",
+        "sha256_cert_fingerprints": [
+          "40:2C:C1:FF:CA:29:B2:7B:F9:C6:C1:5C:CF:2A:59:05:54:62:18:6C:57:D4:4B:E7:17:BC:2B:0F:43:C3:A2:41"
+        ]
+      }
+    }
+  ]
