@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Alert,
   Dimensions,
-  Linking,
   RefreshControl,
   SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-  View,
 } from 'react-native';
 import { useAuthContext } from '../context/AuthContext';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,7 +11,7 @@ import {
   updateNearBy,
   updateReadyToCollect,
 } from '../redux/slides/locationSlides';
-import { updateInit } from '../redux/slides/userSlides';
+import { updateCoordinate, updateInit } from '../redux/slides/userSlides';
 import useApi from '../hooks/useAPI';
 import {
   getDropByUserAddress,
@@ -24,14 +19,11 @@ import {
   getNearByDrop,
 } from '../middleware/data/drop';
 import { getFollowerById, getFollowingById } from '../middleware/data/user';
-import { getMintedByUserAddress } from '../middleware/data/minted';
-import { sortDataByTimeline } from '../utils/account.util';
 import { setDropType } from '../redux/slides/configSlice';
 import request from '../axios';
 import Header from '../components/home/Header';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { router } from 'expo-router';
-import { Image } from 'expo-image';
 import Discovery from '@/components/home/Discovery';
 import Animated, {
   scrollTo,
@@ -40,8 +32,8 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 import ListHome from '@/components/home/ListHome';
-import Addfriend from './addfriend';
-import AddFriendList from '@/components/friend/AddFriendList';
+import * as Location from 'expo-location';
+
 
 export default function Page() {
   const { signOut } = useAuthContext();
@@ -52,11 +44,8 @@ export default function Page() {
   const location = useSelector((state: any) => state.location);
   const typeList = useSelector((state: any) => state.config?.dropType);
   const dispatch = useDispatch();
-  const [nearBy, setNearBy] = useState([]);
+  const [friendDataList, setFriendDataList] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(false);
-  const [follow, setFollowData] = useState({});
-  const [currentView, setCurrentView] = useState('exploring');
-  const [filter, setFilter] = useState('all');
   const [viewList, setViewList] = useState([]);
   const [showAdd, setShowAdd] = useState(false);
   const [isEnd, setIsEnd] = useState(false);
@@ -76,22 +65,11 @@ export default function Page() {
     })();
   }, []);
 
-  useEffect(() => {
-    if (filter !== 'all') {
-      const result = [...readyToCollect, ...nearBy].filter(
-        (item: any) => item.type === filter
-      );
-      setViewList(result);
-    } else {
-      setViewList([...readyToCollect, ...nearBy]);
-    }
-  }, [readyToCollect, nearBy, filter]);
 
   const getNearBy = async (lat: any, lng: any) => {
-    const data = await getNearByDrop({ lat, lng });
-    dispatch(updateNearBy({ nearBy: data }));
+    const drop = await getDropByUserAddress({ userId: user.friends });
     dispatch(setLastFetch());
-    setNearBy(data);
+    setFriendDataList(drop);
     setLoading(false);
     setRefreshing(false);
   };
@@ -142,37 +120,6 @@ export default function Page() {
     }
   }, [user.id]);
 
-  useEffect(() => {
-    if (user.following && user.following.length > 0) {
-      (async () => {
-        const userData: any = [];
-        await getDropByUserAddress({
-          userId: user.following,
-          onSuccess: (res) => {
-            userData.push(
-              ...res.map((item: any) => {
-                item.type = 'drop';
-                return item;
-              })
-            );
-          },
-        });
-
-        await getMintedByUserAddress({
-          userId: user.following,
-          onSuccess: (res) => {
-            userData.push(
-              ...res.map((item: any) => {
-                item.type = 'minted';
-                return item;
-              })
-            );
-          },
-        });
-        setFollowData(sortDataByTimeline(userData));
-      })();
-    }
-  }, [user.following]);
   const handleScroll = (event: any) => {
     const windowHeight = event.nativeEvent.layoutMeasurement.height;
     const documentHeight = event.nativeEvent.contentSize.height;
@@ -192,10 +139,17 @@ export default function Page() {
 
   const [refreshing, setRefreshing] = React.useState(false);
 
-  const onRefresh = React.useCallback(() => {
+  const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
-    getReadyToCollect(user.lat, user.lng);
-    getNearBy(user.lat, user.lng);
+    let { coords } = await Location.getCurrentPositionAsync({});
+    dispatch(
+      updateCoordinate({
+        lat: coords.latitude,
+        lng: coords.longitude,
+      })
+    )
+    getReadyToCollect(coords.latitude, coords.longitude);
+    getNearBy(coords.latitude, coords.longitude);
   }, []);
 
   return (
@@ -232,7 +186,7 @@ export default function Page() {
               onScroll={handleScroll}
               scrollEventThrottle={16}
             > */}
-            <ListHome status={'Nearby'} data={nearBy} isEnd={isEnd} />
+            <ListHome status={'Nearby'} data={friendDataList} isEnd={isEnd} />
             {/* </ScrollView> */}
           </Animated.ScrollView>
         </>

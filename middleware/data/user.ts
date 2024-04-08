@@ -26,7 +26,8 @@ export const isUserIsExisted = async ({ email }: { email: any }) => {
     if (data?.length === 0) {
       return { isUserIsExist: false, data: [] };
     } else {
-      return { isUserIsExist: true, data: data[0] };
+      const friends = await getListFriend(data[0]?.id);
+      return { isUserIsExist: true, data: {...data[0], friends} };
     }
   }
 
@@ -139,22 +140,10 @@ export const getUserAccountData = async ({ userId }: { userId: number }) => {
     .select('*,drop(*,user(*)), minted(*,drop(*,user(*)),user(*))')
     .eq('id', userId);
 
-  const { data: test } = await supabase.from('drop').select('*');
+  const friends = await getListFriend(userId);
 
-  const { data: followerData, followerError }: any = await supabase
-    .from('follow')
-    .select('follower')
-    .eq('following', userId);
-
-  const { data: followingData, followingError }: any = await supabase
-    .from('follow')
-    .select('following')
-    .eq('follower', userId);
-
-  if (!error && !followerError && !followingError) {
-    data[0].follower = followerData?.map((item: any) => item.follower);
-    data[0].following = followingData?.map((item: any) => item.following);
-    return data[0];
+  if (!error) {
+    return { ...data[0], friends };
   }
 };
 
@@ -221,14 +210,7 @@ export const addFriend = async (userId1: any, userId2: any) => {
     .filter('userId1', 'in', `(${userId1},${userId2})`)
     .filter('userId2', 'in', `(${userId1},${userId2})`)
 
-    // .or(`userId1.in.(${userId1},${userId2}), userId2.in.(${userId1},${userId2}),`)
-    // .eq('userId1', userId1)
-    // .eq('userId1', userId2)
-    // .eq('userId2', userId1)
-    // .eq('userId2', userId2)
-
   if (isExist && isExist.length > 0) {
-    // Friendship already exists, do nothing or handle accordingly
     return 'Friendship already exists';
   }
   const { data: newFriendship, error } = await supabase
@@ -242,4 +224,21 @@ export const addFriend = async (userId1: any, userId2: any) => {
     Alert.alert(JSON.stringify(error));
     return 'Some thing wrong!'
   }
+}
+
+export const getListFriend = async (userId: any) => {
+  const { data: friendList } = await supabase
+    .from('friends')
+    .select('*')
+    .or(`userId1.eq.${userId},userId2.eq.${userId}`)
+
+  const result = friendList?.map(({ userId1, userId2 }: { id: number, userId1: number, userId2: number }) => {
+    if (userId1 === userId) {
+      return userId2;
+    } else {
+      return userId1;
+    }
+  })
+  
+  return result;
 }

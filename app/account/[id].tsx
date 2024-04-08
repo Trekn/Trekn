@@ -102,7 +102,6 @@ export default function Account() {
       );
     }
     const data = sortDataByTimeline(userData);
-    console.log(data);
     dispatch(setAccountData(data));
     setUserData(data);
     setRefreshing(false);
@@ -255,11 +254,9 @@ export default function Account() {
                         paddingVertical: 8,
                       }}
                       onPress={async () => {
-                        // await unLinkWallet({ userId: user.id });
+                        await unLinkWallet({ userId: user.id });
 
-                        // dispatch(updateUser({ ...user, address: '' }));
-
-                        signOut();
+                        dispatch(updateUser({ ...user, address: '' }));
                       }}
                     >
                       <Text

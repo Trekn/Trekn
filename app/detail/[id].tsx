@@ -19,6 +19,7 @@ import Voting from '@/components/voting/Voting';
 import Validating from '@/components/voting/Validating';
 import VotingButton from '@/components/voting/VotingButton';
 import CustomDrawer from '@/components/CustomDrawer';
+import { voteDrop } from '@/middleware/data/voting';
 
 const reactions = [
   {
@@ -46,27 +47,25 @@ export default function Details() {
   const [selectedLocation, setSelectedLocation] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [openClaim, setOpenClaim] = useState(false);
-  const [showVote, setShowVote] = useState(true);
+  const [isVoted, setIsVoted] = useState(false);
 
   const checkValidate = () => {
-    if (user.id === selectedLocation?.user?.id) {
-      return false
-    } else {
-      const date = new Date(selectedLocation?.created);
-      // const date = new Date();
-      const currentDate = new Date();
-      date.setDate(date.getDate() + 1);
-      return currentDate <= date;
-    }
+    // if (user.id === selectedLocation?.user?.id) {
+    //   return false
+    // } else {
+    const date = new Date(selectedLocation?.created_at);
+    const currentDate = new Date();
+    date.setDate(date.getDate() + 1);
+    return currentDate <= date;
+    // }
   }
 
-  const handleVote = (type: string) => {
-    if (type === 'like') {
-      setSelectedLocation((prev: any) => ({ ...prev, like: prev.like + 1 }))
-    } else {
-      setSelectedLocation((prev: any) => ({ ...prev, unlike: prev.unlike + 1 }))
-    }
-    setShowVote(false);
+  const handleVote = async (type: string) => {
+    const votingId = selectedLocation?.voting?.id;
+    const userId = user.id;
+    const votingResult = await voteDrop({ type, votingId, user: userId });
+    setSelectedLocation((prev: any) => ({ ...prev, voting: { ...prev?.voting, voting_data: [...prev?.voting?.voting_data, votingResult] } }));
+    setIsVoted(true);
   }
 
   useEffect(() => {
@@ -74,12 +73,15 @@ export default function Details() {
       if (id) {
         setLoading(true);
         const data: any = await getDropByID({ dropId: id });
-        setSelectedLocation({ ...data[0], like: 0, unlike: 0 });
+        setSelectedLocation(data);
 
+        const isVoted = data?.voting?.voting_data.some((voteItem: any) => {
+          return voteItem?.user === user.id
+        })
+        setIsVoted(isVoted && data?.voting?.type === 'voting')
         const distance = Math.ceil(
-          calculateDistance(user.lat, user.lng, data[0].lat, data[0].lng)
+          calculateDistance(user.lat, user.lng, data.lat, data.lng)
         );
-        setOpenClaim(user.id === data[0]?.user?.id)
         setLoading(false);
       }
     })()
@@ -215,12 +217,13 @@ export default function Details() {
                         marginTop: 24
                       }}
                     >
-                      {/* {
+                      {
+                        // selectedLocation?.voting?.type === 'voting' ?
                         checkValidate() ?
-                          <Voting votingData={selectedLocation} />
-                          : */}
-                      <Validating />
-                      {/* } */}
+                          <Voting dropData={selectedLocation} />
+                          :
+                          <Validating />
+                      }
                     </View>
                     {selectedLocation?.description &&
                       <>
@@ -407,7 +410,7 @@ export default function Details() {
             </View >
           </ScrollView>
           {/* TODO: Voting BE */}
-          {/* {checkValidate() && showVote &&
+          {!isVoted &&
             <View
               style={{
                 paddingTop: 16,
@@ -424,10 +427,7 @@ export default function Details() {
               <VotingButton type='unlike' handleVote={() => handleVote('unlike')} />
               <VotingButton type='like' handleVote={() => handleVote('like')} />
             </View>
-          } */}
-          {/* {checkClaim() &&
-          
-          } */}
+          }
           {/* <CustomDrawer
             isOpen={openClaim}
             onClose={() => setOpenClaim(false)}

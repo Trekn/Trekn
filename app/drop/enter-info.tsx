@@ -74,6 +74,56 @@ export default function EnterDropInfo() {
     }
   }, []);
 
+  const handleDrop = async () => {
+    setIsLoading(true);
+    let imageArray: string[] = [];
+    const promises: any = [];
+
+    await metadata.imageArray.forEach(async (image: any) => {
+      const fileName = `${randomNumber().toString()}.jpg`;
+      promises.push(
+        uploadImage({
+          fileName: fileName,
+          ...image,
+        })
+      );
+      imageArray.push(
+        `https://${process.env.EXPO_PUBLIC_AWS_BUCKET_NAME}.s3.${process.env.EXPO_PUBLIC_AWS_REGION}.amazonaws.com/data/${fileName}`
+      );
+    });
+
+    Promise.all(promises)
+      .then(async function (data) {
+        console.log('Upload success');
+
+        await createDrop({
+          drop: {
+            ...metadata,
+            name: name,
+            description: description,
+            type: type,
+            image: imageArray[0],
+            imageArray: imageArray,
+          },
+          user,
+          onSuccess: (data) => { 
+            setMetadata({ ...metadata, dropId: data?.id })
+           },
+          onError: (error) => {
+            console.log(error);
+          },
+        });
+
+        router.replace('/drop/success');
+
+        setIsLoading(false);
+      })
+      .catch(function (err) {
+        console.log('Error', err);
+        setIsLoading(false);
+      });
+  }
+
   if (isLoading) {
     return (
       <SafeAreaView
@@ -386,51 +436,7 @@ export default function EnterDropInfo() {
             marginVertical: 24,
           }}
           onPress={async () => {
-            setIsLoading(true);
-            let imageArray: string[] = [];
-            const promises: any = [];
-
-            await metadata.imageArray.forEach(async (image: any) => {
-              const fileName = `${randomNumber().toString()}.jpg`;
-              promises.push(
-                uploadImage({
-                  fileName: fileName,
-                  ...image,
-                })
-              );
-              imageArray.push(
-                `https://${process.env.EXPO_PUBLIC_AWS_BUCKET_NAME}.s3.${process.env.EXPO_PUBLIC_AWS_REGION}.amazonaws.com/data/${fileName}`
-              );
-            });
-
-            Promise.all(promises)
-              .then(async function (data) {
-                console.log('Upload success');
-
-                await createDrop({
-                  drop: {
-                    ...metadata,
-                    name: name,
-                    description: description,
-                    type: type,
-                    image: imageArray[0],
-                    imageArray: imageArray,
-                  },
-                  user,
-                  onSuccess: (data) => { setMetadata({...metadata, dropId: data?.id}) },
-                  onError: (error) => {
-                    console.log(error);
-                  },
-                });
-
-                router.replace('/drop/success');
-
-                setIsLoading(false);
-              })
-              .catch(function (err) {
-                console.log('Error', err);
-                setIsLoading(false);
-              });
+            handleDrop()
           }}
         >
           <FontAwesomeIcon icon={faCheckCircle} size={16} color='white' />

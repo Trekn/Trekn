@@ -124,7 +124,7 @@ export default function Discovery({
               borderRadius: 999,
               marginHorizontal: 20,
               marginTop: 24,
-              marginBottom: 29,
+              marginBottom: 20,
             }}
             onPress={() => {
               router.replace(
@@ -150,6 +150,7 @@ export default function Discovery({
               alignItems: 'center',
               flexDirection: 'row',
               columnGap: 8,
+              padding: 9
             }}
             onPress={() => {
               router.replace(

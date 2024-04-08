@@ -1,16 +1,10 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Slot, Stack } from 'expo-router';
+import { Slot } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect } from 'react';
 
-import { useColorScheme } from '@/components/useColorScheme';
-import { Dimensions, LogBox, SafeAreaView, StatusBar, View } from 'react-native';
+import { StatusBar, View } from 'react-native';
 import { AuthProvider } from '@/context/AuthContext';
 import Navbar from '@/components/Navbar';
 import { Provider } from 'react-redux';
@@ -45,7 +39,7 @@ import { Appearance } from 'react-native';
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 SplashScreen.preventAutoHideAsync();
-LogBox.ignoreAllLogs();
+// LogBox.ignoreAllLogs();
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
@@ -59,7 +53,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (loaded) {
-      SplashScreen.hideAsync();
+      // SplashScreen.hideAsync();
     }
   }, [loaded]);
 
@@ -89,7 +83,7 @@ function RootLayoutNav() {
           </AuthProvider>
         </Provider>
       </View>
-      {/* <StatusBar barStyle={'light-content'} /> */}
+      <StatusBar barStyle={'light-content'} />
     </>
   );
 }

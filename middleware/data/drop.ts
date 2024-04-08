@@ -27,7 +27,13 @@ export const createDrop = async ({
     .insert(newDrop)
     .select('*, user(*)');
 
+
   if (!error) {
+    await supabase
+      .from('voting')
+      .insert({
+        dropId: data[0].id
+      })
     onSuccess(data[0]);
   } else {
     onError(error);
@@ -51,11 +57,9 @@ export const getAllDrops = async ({
 
 export const getDropByUserAddress = async ({
   userId,
-  onSuccess = () => { },
   onError = () => { },
 }: {
   userId: Array<number>;
-  onSuccess?: (data: any) => void;
   onError?: (error: any) => void;
 }) => {
   const { data, error } = await supabase
@@ -64,21 +68,26 @@ export const getDropByUserAddress = async ({
     .or(`author_id.in.(${userId})`);
 
   if (!error) {
-    onSuccess(data);
+    return data;
   } else {
     onError('');
+    return [];
   }
 };
 
 export const getDropByID = async ({ dropId }: { dropId: any }) => {
-  const { data, error } = await supabase
+  let query: string = '*, user(*), minted(*, user(*), reaction(*))'
+  if (dropId >= 1765) {
+    query = '*, user(*), minted(*, user(*), reaction(*)), voting(id,type,voting_data(*))';
+  }
+  const { data, error }: any = await supabase
     .from('drop')
-    .select('*, user(*), minted(*, user(*), reaction(*))')
-
+    .select(query)
     .eq('id', dropId);
+
   if (!error) {
     // onSuccess(data);
-    return data;
+    return { ...data[0], voting: data[0]?.votiong ? data[0]?.voting[0] : null };
   } else {
     // onError('');
   }
@@ -137,7 +146,7 @@ export const getDropType = async ({
 export const getNearByDrop = async ({ lat, lng }: { lat: number, lng: number }) => {
   try {
 
-    const { data, error }: any = await supabase.from('drop').select('*, user(*), reaction(*), minted(*, user(*))');
+    const { data, error }: any = await supabase.from('drop').select('*, user(*), reaction(*), minted(*, user(*)), voting(type, voting_data(*))');
 
     let nearBy: any = [];
     data.map((drop: any) => {
@@ -154,7 +163,7 @@ export const getNearByDrop = async ({ lat, lng }: { lat: number, lng: number }) 
     });
     nearBy.sort((a: any, b: any) => a.distance - b.distance);
     if (!error) {
-      return nearBy
+      return nearBy.map((item: any) => ({ ...item, voting: item.voting[0] || {} }))
     } else {
       throw new Error(error);
     }

@@ -2,7 +2,7 @@
   "expo": {
     "name": "Trekn",
     "slug": "trekn",
-    "version": "0.2.7",
+    "version": "0.2.11",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "trekn",
@@ -10,7 +10,7 @@
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#131313"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -20,7 +20,7 @@
       "bundleIdentifier": "xyz.exploration.trekn",
       "googleServicesFile": "./google/ios.plist",
       "usesAppleSignIn": true,
-      "buildNumber": "22",
+      "buildNumber": "26",
       "config": {
         "googleSignIn": {
           "reservedClientId": ""
@@ -32,7 +32,9 @@
           "instagram-stories",
           "telegram",
           "tg",
-          "messenger"
+          "messenger",
+          "me",
+          "m.me"
         ]
       },
     },
@@ -41,10 +43,10 @@
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "versionCode": 18,
+      "versionCode": 19,
       "config": {
         "googleMaps": {
-          "apiKey": ""
+          "apiKey": "AIzaSyD2gDXHzVF8I3G-ui_PeKrEcWvWHLq33S4"
         }
       },
       "package": "com.c2tx420.TreknNativeSDK50"

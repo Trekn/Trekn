@@ -2,26 +2,26 @@ import moment from 'moment';
 
 export const sortDataByTimeline = (data: any) => {
   const result: any = {};
-  data
-    .sort((a: any, b: any) => {
-      const dateA = new Date(a?.created_at);
-      const dateB = new Date(b?.created_at);
-
-      if (dateA < dateB) {
-        return -1;
-      }
-      if (dateA < dateB) {
-        return 1;
-      }
-      return 0;
-    })
-    .reverse();
-
+  console.log(data[0])
+  data.sort((a: any, b: any) => {
+    const dateA = new Date(a?.created_at);
+    const dateB = new Date(b?.created_at);
+  
+    if (dateA < dateB) {
+      return -1;
+    }
+    if (dateA > dateB) {
+      return 1;
+    }
+    return 0;
+  }).reverse();
+  
   data.map((item: any) => {
     const date = new Date(item?.created_at);
     const key = isTodayOrYesterday(date);
     result[key] = [...(result[key] || []), item];
   });
+  
   return result;
 };
 

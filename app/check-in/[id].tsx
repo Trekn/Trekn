@@ -48,8 +48,7 @@ export default function CheckinWPhoto() {
   const [desc, setDesc] = useState<string>('');
   const [selectedLocation, setSelectedLocation] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [selectNftDrawerOpen, setSelectNftDrawerOpen] =
-    useState<boolean>(false);
+  const [selectNftDrawerOpen, setSelectNftDrawerOpen] = useState<boolean>(false);
   const [listNft, setListNft] = useState<Array<any>>([]);
   const [selectedNft, setSelectedNft] = useState<any>(null);
   const { get } = useApi();
@@ -86,7 +85,7 @@ export default function CheckinWPhoto() {
         const drop: any = await getDropByID({
           dropId,
         });
-        setSelectedLocation(drop[0]);
+        setSelectedLocation(drop);
       }
     })();
   }, []);

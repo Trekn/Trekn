@@ -3,11 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import React, { useEffect, useState } from 'react'
 import { Text, View } from 'react-native'
 
-export default function Voting({ votingData }: any) {
+export default function Voting({ dropData }: any) {
     const [date, setDate] = useState(() => {
-        console.log(votingData);
-        // const date = new Date(votingData?.created_at);
-        const date = new Date();
+        const date = new Date(dropData?.created_at);
         date.setDate(date.getDate() + 1);
         return date;
     });
@@ -31,6 +29,11 @@ export default function Voting({ votingData }: any) {
 
         return () => clearInterval(countdownTime);
     }, []);
+
+    const calculateVote = (type: string): number => {
+        const votingNumber = dropData?.voting?.voting_data?.filter((item: any) => item.type === type) || 0;
+        return votingNumber?.length;
+    }
 
     return (
         <View
@@ -65,7 +68,7 @@ export default function Voting({ votingData }: any) {
                         }}
                     >
                         <FontAwesomeIcon icon={faThumbsUp} color='#57C500' size={16} />
-                        <Text>{votingData?.like || 0}</Text>
+                        <Text>{calculateVote('like') || 0}</Text>
                     </View>
                     <View
                         style={{
@@ -83,7 +86,7 @@ export default function Voting({ votingData }: any) {
                         }}
                     >
                         <FontAwesomeIcon icon={faThumbsDown} color='#FE3F3F' size={16} />
-                        <Text>{votingData?.unlike || 0}</Text>
+                        <Text>{calculateVote('unlike') || 0}</Text>
                     </View>
                 </View>
             </View>

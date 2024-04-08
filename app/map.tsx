@@ -22,7 +22,7 @@ export default function MapViewPage() {
   const [listView, setListView] = useState<any[]>([]);
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<any>(null);
-  const [currentView, setCurrentView] = useState('list');
+  const [currentView, setCurrentView] = useState('map');
   const [isEnd, setIsEnd] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -79,14 +79,14 @@ export default function MapViewPage() {
 
   useEffect(() => {
     if (filter !== 'all') {
-        const result = [...nearBy].filter(
-            (item: any) => item.type === filter
-        );
-        setListView(result);
+      const result = [...nearBy].filter(
+        (item: any) => item.type === filter
+      );
+      setListView(result);
     } else {
       setListView(nearBy);
     }
-}, [filter]);
+  }, [filter]);
 
   useEffect(() => {
     (async () => {
@@ -101,6 +101,7 @@ export default function MapViewPage() {
 
       const { lng, lat } = user
       const data = await getNearByDrop({ lat, lng });
+      console.log(data[0])
       setListView(data);
       setNearBy(data);
       setLoading(false);
@@ -113,7 +114,7 @@ export default function MapViewPage() {
         position: 'relative',
         width: Dimensions.get('screen').width,
         height: Dimensions.get('screen').height,
-        marginTop: Constants.statusBarHeight 
+        marginTop: Constants.statusBarHeight
       }}>
       {loading ?
         <LoadingSpinner />
@@ -138,26 +139,6 @@ export default function MapViewPage() {
                 padding: 4,
               }}>
               <TouchableOpacity
-                onPress={() => setCurrentView('list')}
-                style={{
-                  width: '50%',
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  paddingVertical: 8,
-                  backgroundColor: currentView === 'list' ? 'white' : 'transparent',
-                  borderRadius: currentView === 'list' ? 10 : 0,
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 16,
-                    fontWeight: 'bold'
-                  }}>
-                  List view
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
                 onPress={() => setCurrentView('map')}
                 style={{
                   width: '50%',
@@ -178,6 +159,26 @@ export default function MapViewPage() {
                   Map view
                 </Text>
               </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setCurrentView('list')}
+                style={{
+                  width: '50%',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  paddingVertical: 8,
+                  backgroundColor: currentView === 'list' ? 'white' : 'transparent',
+                  borderRadius: currentView === 'list' ? 10 : 0,
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontWeight: 'bold'
+                  }}>
+                  List view
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
           {currentView === 'map' ?
@@ -192,9 +193,9 @@ export default function MapViewPage() {
                 style={{
                   height: '100%',
                   position: 'relative',
-                  marginTop: -Constants.statusBarHeight 
+                  marginTop: -Constants.statusBarHeight
                 }}
-                // minZoomLevel={14}
+              // minZoomLevel={14}
               >
                 {listView.map((location, index) => (
                   <Marker

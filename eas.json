@@ -14,7 +14,7 @@
         "image": "latest"
       },
       "env": {
-        "FLIPPER_DISABLE": "1",
+        "FLIPPER_DISABLE": "",
         "EXPO_PUBLIC_HELIUS_RPC_URL": "",
         "EXPO_PUBLIC_CLIENT_ID_WEB3_AUTH": "",
         "EXPO_PUBLIC_SERVER_SECRET_KEY": "",
@@ -46,7 +46,7 @@
         "buildType": "app-bundle"
       },
       "env": {
-        "FLIPPER_DISABLE": "1",
+        "FLIPPER_DISABLE": "",
         "EXPO_PUBLIC_HELIUS_RPC_URL": "",
         "EXPO_PUBLIC_CLIENT_ID_WEB3_AUTH": "",
         "EXPO_PUBLIC_SERVER_SECRET_KEY": "",

@@ -27,7 +27,7 @@ export const userSlide = createSlice({
       return (state = { ...state, ...action.payload });
     },
     updateUser: (state, action) => {
-      const { name, email, address, profileImage, point, id, description } =
+      const { name, email, address, profileImage, point, id, description, friends } =
         action.payload;
       state.id = id ? id : state.id;
       state.name = name ? name : state.name;
@@ -36,6 +36,7 @@ export const userSlide = createSlice({
       state.profileImage = profileImage ? profileImage : state.profileImage;
       state.point = point ? point : state.point;
       state.description = description ? description : state.description;
+      state.friends = friends ? friends : state.friends;
       state.lastFetch = now();
       AsyncStorage.setItem('user', JSON.stringify(state));
     },

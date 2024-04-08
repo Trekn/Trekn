@@ -19,30 +19,28 @@ import {
   updateInit,
   updateUser,
 } from '../redux/slides/userSlides';
-import { getDropByUserAddress, getDropType } from '../middleware/data/drop';
 import { useDispatch, useSelector } from 'react-redux';
 import useApi from '../hooks/useAPI';
 import * as Location from 'expo-location';
 import { router } from 'expo-router';
 import { useStorageState } from '../functions/useStorageState';
 // import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { supabase } from '../utils/supabaseClients';
 import { clearAccountData } from '../redux/slides/accountSlice';
-import { setDropType } from '../redux/slides/configSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import 'react-native-get-random-values';
 import 'react-native-url-polyfill/auto';
 import { Buffer } from 'buffer';
 global.Buffer = global.Buffer || Buffer;
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Alert } from 'react-native';
 import { PublicKey } from '@solana/web3.js';
-import { COLORS, BASE_URL } from '../constants';
+import { BASE_URL } from '../constants';
 import * as Linking from 'expo-linking';
 import bs58 from 'bs58';
 import nacl from 'tweetnacl';
 import { decryptPayload, encryptPayload } from '@/components/PhantomButton';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { googleSingin } from '@/functions/googleSignin';
+import * as SplashScreen from 'expo-splash-screen';
 
 export const AuthContext = createContext({} as AuthContextProps);
 export const useAuthContext = () => useContext(AuthContext);
@@ -61,72 +59,26 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const { get } = useApi();
   const [leaderBoard, setLeaderBoard] = useState(false);
 
-  // Calculate the scaling factor
-
-  const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
-
-  useEffect(() => {
-    setWindowSize({
-      width: window.innerWidth,
-      height: window.innerHeight,
-    });
-    function handleResize() { }
-
-    // window.addEventListener('resize', handleResize);
-
-    return () => {
-      // window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  // useEffect(() => {
-  //   (async () => {
-  //     // let { status } = await Location.requestForegroundPermissionsAsync();
-  //     const { status } = await Location.getForegroundPermissionsAsync()
-
-  //     if (status !== 'granted') {
-  //       router.replace('/location');
-  //       return;
-
-  //       let { coords } = await Location.getCurrentPositionAsync();
-  //       dispatch(
-  //         updateCoordinate({
-  //           lat: coords.latitude,
-  //           lng: coords.longitude,
-  //         })
-  //       );
-  //     }
-  //   })();
-  // }, []);
-
   useEffect(() => {
     (async () => {
       const { status } = await Location.getForegroundPermissionsAsync();
 
       if (status !== 'granted') {
         router.replace('/location');
-        return;
+        return SplashScreen.hideAsync();
       } else {
         const storedData = await AsyncStorage.getItem('user');
         const storedUser = storedData ? JSON.parse(storedData) : null;
-        console.log(storedUser.id);
 
         if (storedUser?.id) {
           if (
             storedUser.lastFetch == -1 ||
             now() - storedUser.lastFetch > 60 * 10
           ) {
-            const { data, error }: any = await supabase
-            .from('user')
-            .select('*')
-            .eq('id', Number(storedUser?.id));
+            const userData = await getUserAccountData({ userId: storedUser?.id })
 
-            console.log('userData', data);
-            if (data) {
-              dispatch(updateUser(data[0]));
+            if (userData) {
+              dispatch(updateUser(userData));
             }
           } else {
             dispatch(updateUser(storedUser));
@@ -143,6 +95,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           lng: coords.longitude,
         })
       );
+      return SplashScreen.hideAsync();
     })();
   }, []);
 
@@ -337,7 +290,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         isLoading,
         metadata: nftMetada,
         setMetadata: setNFTMetadata,
-        windowSize: windowSize,
         leaderBoard: leaderBoard,
         setLeaderBoard: setLeaderBoard,
         connectWallet: connect,
@@ -355,10 +307,6 @@ interface AuthProviderProps {
 interface AuthContextProps {
   metadata: IDrop;
   setMetadata: (metadata: any) => void;
-  windowSize: {
-    width: number;
-    height: number;
-  };
   leaderBoard: boolean;
   setLeaderBoard: (leaderBoard: boolean) => void;
   signIn: (type: string) => Promise<any>;
